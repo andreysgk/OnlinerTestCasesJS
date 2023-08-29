@@ -16,3 +16,16 @@ test('search product', async () => {
     await swichToIframe.click();
     await expect(catalog.Locastors.NameProduct).toHaveText("Смартфон Samsung Galaxy A52 SM-A525F/DS 4GB/128GB (черный)");
   });
+
+  test('Adding the product into the cart from product’s page', async()=>{
+    let mainMenu = new MainPage(page);
+    let catalog = new CatalogPage(page);
+    await mainMenu.Locators.SearchBar.fill("Смартфон Samsung Galaxy A52 SM-A525F/DS 4GB/128GB (черный)");
+    // Переключил iframe
+    const swichToIframe = await mainMenu.Locators.Iframe.locator(mainMenu.Locators.FirstProduct);
+    await swichToIframe.click();
+    await expect(catalog.Locastors.NameProduct).toHaveText("Смартфон Samsung Galaxy A52 SM-A525F/DS 4GB/128GB (черный)");
+    await expect(catalog.Locastors.CheckModuleDescription).toHaveText("Характеристики");
+    await catalog.Locastors.AddToCart.click();
+    await expect(catalog.Locastors.ProductAddedToCart).toHaveText('Товар добавлен в корзину');
+  })
